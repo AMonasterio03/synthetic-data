@@ -37,12 +37,46 @@ def clean_data(data):
     return cleaned
 
 
+def is_medical_disorder(description):
+    """Check if a condition description is a medical disorder/disease."""
+    if not description:
+        return False
+    
+    desc_lower = description.lower()
+    
+    social_findings = [
+        'employment', 'education', 'stress', 'social isolation',
+        'social contact', 'risk activity', 'refugee', 'housing',
+        'victim of', 'criminal record', 'lack of', 'misuses',
+        'reports of', 'homeless', 'transport problem'
+    ]
+    
+    if description.endswith('(finding)'):
+        for social_term in social_findings:
+            if social_term in desc_lower:
+                return False
+    
+    medical_indicators = [
+        '(disorder)', 'disease', 'syndrome', 'infection', 'cancer',
+        'diabetes', 'injury', 'fracture', 'hypertension', 'failure',
+        'insufficiency', 'deficiency', 'anemia', 'itis', 'osis',
+        'carcinoma', 'neoplasm', 'embolism', 'infarction', 'stroke',
+        'pneumonia', 'asthma', 'copd', 'fibrillation', 'ischemia'
+    ]
+    
+    for indicator in medical_indicators:
+        if indicator in desc_lower:
+            return True
+    
+    return False
+
+
 def analyze_top_conditions(conditions_data, top_n=5):
-    """Analyze conditions and return top N most common."""
+    """Analyze conditions and return top N most common medical disorders."""
     descriptions = [
         row['DESCRIPTION'] 
         for row in conditions_data 
-        if row.get('DESCRIPTION')
+        if row.get('DESCRIPTION') and is_medical_disorder(row['DESCRIPTION'])
     ]
     
     condition_counts = Counter(descriptions)
@@ -77,20 +111,21 @@ def main():
     print("✓ Data cleaned (whitespace stripped, empty values handled)")
     print()
     
-    print("Analyzing top 5 most common medical conditions...")
-    top_conditions, total_conditions = analyze_top_conditions(conditions, top_n=5)
+    print("Analyzing top 5 most common medical disorders...")
+    top_conditions, total_disorders = analyze_top_conditions(conditions, top_n=5)
     print()
     
     print("=" * 70)
-    print("RESULTS: TOP 5 MOST COMMON MEDICAL CONDITIONS")
+    print("RESULTS: TOP 5 MOST COMMON MEDICAL DISORDERS")
     print("=" * 70)
-    print(f"Total condition records analyzed: {total_conditions}")
+    print(f"Total medical disorder records analyzed: {total_disorders}")
+    print(f"(Filtered to exclude social/employment findings)")
     print()
     
     for rank, (condition, count) in enumerate(top_conditions, 1):
-        percentage = (count / total_conditions) * 100
+        percentage = (count / total_disorders) * 100
         print(f"{rank}. {condition}")
-        print(f"   Count: {count} ({percentage:.1f}% of all conditions)")
+        print(f"   Count: {count} ({percentage:.1f}% of medical disorders)")
         print()
     
     print("=" * 70)
