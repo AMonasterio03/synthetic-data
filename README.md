@@ -57,3 +57,6 @@ Synthea patient generator is very powerful, thanks to the MITRE team. It has mod
 **CAUTION**: ALL SYNTHETIC DATA IN THIS PROJECT ARE NOT REAL DATA. THEY ARE FOR TRAINING AND LEARNING PURPOSE ONLY. THESE DATA AND ANY DERIVED MODELS SHOULD NOT AND CAN NOT BE USED IN ANY REAL-WORLD SERVICES. 
 
 **License**: [CC-BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/). You are free to adapt, copy or redistribute the material, providing you attribute appropriately and do not use the material for commercial purposes.
+
+---
+*Repository verified and accessible - October 2025*
